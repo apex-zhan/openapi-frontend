@@ -35,6 +35,12 @@ export default [
     access: 'canAdmin',
     routes: [
       {
+        name: '查询表格',
+        icon: 'table',
+        path: '/admin/interface',
+        component: './TableList',
+      },
+      {
         path: '/admin',
         redirect: '/admin/sub-page',
       },
@@ -45,12 +51,7 @@ export default [
       },
     ],
   },
-  {
-    name: '查询表格',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
+
   {
     path: '/',
     redirect: '/welcome',
