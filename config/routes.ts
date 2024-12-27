@@ -23,10 +23,17 @@ export default [
     ],
   },
   {
-    path: '/welcome',
-    name: 'welcome',
+    path: '/',
+    name: '主页',
     icon: 'smile',
-    component: './Welcome',
+    component: './Index',
+  },
+  {
+    path: '/interface/:id',
+    name: '查看接口',
+    icon: 'api',
+    component: './InterfaceInfo',
+    hideInMenu: true,
   },
   {
     path: '/admin',
@@ -35,7 +42,7 @@ export default [
     access: 'canAdmin',
     routes: [
       {
-        name: '查询表格',
+        name: '接口管理',
         icon: 'table',
         path: '/admin/interface',
         component: './TableList',
@@ -48,6 +55,12 @@ export default [
         path: '/admin/sub-page',
         name: 'sub-page',
         component: './Admin',
+      },
+      {
+        path: '/admin/interface_analysis',
+        name: '接口分析',
+        icon: 'api',
+        component: './Admin/interfaceAnalysis',
       },
     ],
   },

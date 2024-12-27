@@ -26,6 +26,7 @@ const UpdateModal: React.FC<Props> = (props) => {
     formRef.current?.setFieldsValue(values);
   }, [values])
   return <Modal open={visible} onCancel={() => onCancel()} footer={null}>
+    {/* {JSON.stringify(values)} */}
     <ProTable type={"form"} columns={columns}
               formRef={formRef}  // 表单的初始值
               onSubmit={async (value) => {

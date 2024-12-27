@@ -23,6 +23,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListUserInterfaceInfo_ = {
+    code?: number;
+    data?: UserInterfaceInfo[];
+    message?: string;
+  };
+
   type BaseResponseLoginUserVO_ = {
     code?: number;
     data?: LoginUserVO;
@@ -59,6 +65,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePageUserInterfaceInfo_ = {
+    code?: number;
+    data?: PageUserInterfaceInfo_;
+    message?: string;
+  };
+
   type BaseResponsePageUserVO_ = {
     code?: number;
     data?: PageUserVO_;
@@ -74,6 +86,12 @@ declare namespace API {
   type BaseResponseUser_ = {
     code?: number;
     data?: User;
+    message?: string;
+  };
+
+  type BaseResponseUserInterfaceInfo_ = {
+    code?: number;
+    data?: UserInterfaceInfo;
     message?: string;
   };
 
@@ -110,6 +128,11 @@ declare namespace API {
   };
 
   type getUserByIdUsingGETParams = {
+    /** id */
+    id?: number;
+  };
+
+  type getUserInterfaceInfoByIdUsingGETParams = {
     /** id */
     id?: number;
   };
@@ -196,6 +219,32 @@ declare namespace API {
     userId?: number;
   };
 
+  type listUserInterfaceInfoByPageUsingGETParams = {
+    current?: number;
+    id?: number;
+    interfaceInfoId?: string;
+    leftNum?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    status?: number;
+    totalNum?: number;
+    userId?: string;
+  };
+
+  type listUserInterfaceInfoUsingGETParams = {
+    current?: number;
+    id?: number;
+    interfaceInfoId?: string;
+    leftNum?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    status?: number;
+    totalNum?: number;
+    userId?: string;
+  };
+
   type LoginUserVO = {
     createTime?: string;
     id?: number;
@@ -255,6 +304,19 @@ declare namespace API {
     orders?: OrderItem[];
     pages?: number;
     records?: User[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageUserInterfaceInfo_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: UserInterfaceInfo[];
     searchCount?: boolean;
     size?: number;
     total?: number;
@@ -347,6 +409,37 @@ declare namespace API {
     userAvatar?: string;
     userName?: string;
     userRole?: string;
+  };
+
+  type UserInterfaceInfo = {
+    createTime?: string;
+    id?: number;
+    interfaceInfoId?: number;
+    isDelete?: number;
+    leftNum?: number;
+    status?: number;
+    totalNum?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type UserInterfaceInfoAddRequest = {
+    interfaceInfoId?: string;
+    leftNum?: number;
+    totalNum?: number;
+    userId?: number;
+  };
+
+  type UserInterfaceInfoInvokeRequest = {
+    id?: number;
+    userRequestParams?: string;
+  };
+
+  type UserInterfaceInfoUpdateRequest = {
+    id?: number;
+    leftNum?: number;
+    status?: number;
+    totalNum?: number;
   };
 
   type userLoginByWxOpenUsingGETParams = {

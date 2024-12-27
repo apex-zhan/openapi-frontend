@@ -33,7 +33,7 @@ export async function listFavourPostByPageUsingPost(
 }
 
 /** listMyFavourPostByPage POST /api/post_favour/my/list/page */
-export async function (
+export async function listMyFavourPostByPageUsingPost(
   body: API.PostQueryRequest,
   options?: { [key: string]: any },
 ) {

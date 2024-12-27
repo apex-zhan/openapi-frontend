@@ -3,7 +3,7 @@ import { LinkOutlined } from '@ant-design/icons';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
-import { errorConfig } from './requestErrorConfig';
+import { errorConfig } from './requestConfig';
 import { getLoginUserUsingGet } from './services/openapi-backend/userController';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -120,8 +120,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request = {
-  baseURL: 'http://localhost:8101',
-  //Cookies 是否被发送到服务器
-  withCredentials: true,
+
   ...errorConfig,
 };

@@ -1,11 +1,13 @@
-import {removeRule} from '@/services/ant-design-pro/api';
+import CreateModal from '@/pages/TableList/components/CreateModal';
+import UpdateModal from '@/pages/TableList/components/UpdateModal';
 import {
-  addInterfaceInfoUsingPost, deleteInterfaceInfoUsingPost,
+  addInterfaceInfoUsingPost,
+  deleteInterfaceInfoUsingPost,
   listInterfaceInfoByPageUsingGet,
-  updateInterfaceInfoUsingPost
+  updateInterfaceInfoUsingPost,
 } from '@/services/openapi-backend/interfaceInfoController';
-import {PlusOutlined} from '@ant-design/icons';
-import type {ActionType, ProColumns, ProDescriptionsItemProps} from '@ant-design/pro-components';
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
   FooterToolbar,
   ModalForm,
@@ -16,11 +18,8 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import '@umijs/max';
-import {Button, Drawer, message} from 'antd';
-import React, {useRef, useState} from 'react';
-import CreateModal from "@/pages/TableList/components/CreateModal";
-import UpdateModal from "@/pages/TableList/components/UpdateModal";
-
+import { Button, Drawer, message } from 'antd';
+import React, { useRef, useState } from 'react';
 
 const TableList: React.FC = () => {
   /**
@@ -29,7 +28,6 @@ const TableList: React.FC = () => {
    *  */
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
 
-
   /**
    * @en-US The pop-up window of the distribution update window
    * @zh-CN 分布更新窗口的弹窗
@@ -37,8 +35,8 @@ const TableList: React.FC = () => {
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [currentRow, setCurrentRow] = useState<API.InterfaceInfo>();
+  const [selectedRowsState, setSelectedRows] = useState<API.InterfaceInfo[]>([]);
 
   /**
    * @en-US Add node
@@ -48,11 +46,13 @@ const TableList: React.FC = () => {
   const handleAdd = async (fields: API.InterfaceInfo) => {
     const hide = message.loading('正在添加');
     try {
-      await addInterfaceInfoUsingPost({
+      const res = await addInterfaceInfoUsingPost({
         ...fields,
       });
       hide();
-      message.success('创建成功');
+      if (res.data) {
+        message.success('创建成功');
+      }
       handleModalOpen(false);
       actionRef.current?.reload();
       return true;
@@ -71,11 +71,17 @@ const TableList: React.FC = () => {
   const handleUpdate = async (fields: API.InterfaceInfo) => {
     const hide = message.loading('修改中');
     try {
-      await updateInterfaceInfoUsingPost({
+      if (!currentRow) {
+        throw new Error('当前行未定义');
+      }
+      const res = await updateInterfaceInfoUsingPost({
+        id: currentRow.id,
         ...fields,
       });
       hide();
-      message.success('修改成功');
+      if (res.data) {
+        message.success('修改成功');
+      }
       actionRef.current?.reload();
       return true;
     } catch (error: any) {
@@ -84,7 +90,6 @@ const TableList: React.FC = () => {
       return false;
     }
   };
-
 
   /**
    *  Delete node
@@ -96,11 +101,13 @@ const TableList: React.FC = () => {
     const hide = message.loading('正在删除');
     if (!selectedRows) return true;
     try {
-      await deleteInterfaceInfoUsingPost({
+      const res = await deleteInterfaceInfoUsingPost({
         id: selectedRows.id,
       });
       hide();
-      message.success('Deleted successfully and will refresh soon');
+      if (res.data) {
+        message.success('Deleted successfully and will refresh soon');
+      }
       actionRef.current?.reload();
       return true;
     } catch (error) {
@@ -109,7 +116,6 @@ const TableList: React.FC = () => {
       return false;
     }
   };
-
 
   /**
    * @en-US The pop-up window of the distribution update window
@@ -131,7 +137,7 @@ const TableList: React.FC = () => {
           {
             required: true,
             message: '接口名称是必填项',
-          }
+          },
         ],
       },
       render: (dom, entity) => {
@@ -156,7 +162,7 @@ const TableList: React.FC = () => {
           {
             required: true,
             message: '接口名称是必填项',
-          }
+          },
         ],
       },
     },
@@ -169,7 +175,7 @@ const TableList: React.FC = () => {
           {
             required: true,
             message: '接口名称是必填项',
-          }
+          },
         ],
       },
     },
@@ -183,9 +189,14 @@ const TableList: React.FC = () => {
           {
             required: true,
             message: '接口名称是必填项',
-          }
+          },
         ],
       },
+    },
+    {
+      title: '请求参数',
+      dataIndex: 'requestParams',
+      valueType: 'jsonCode',
     },
     {
       title: '请求头',
@@ -304,7 +315,7 @@ const TableList: React.FC = () => {
               handleModalOpen(true);
             }}
           >
-            <PlusOutlined/> 新建
+            <PlusOutlined /> 新建
           </Button>,
         ]}
         request={async (
@@ -392,7 +403,7 @@ const TableList: React.FC = () => {
           width="md"
           name="name"
         />
-        <ProFormTextArea width="md" name="desc"/>
+        <ProFormTextArea width="md" name="desc" />
       </ModalForm>
       <UpdateModal
         columns={columns}
@@ -439,14 +450,18 @@ const TableList: React.FC = () => {
           />
         )}
       </Drawer>
-      <CreateModal columns={columns} onCancel={() => {
-        handleModalOpen(false)
-        //提交
-      }} onSubmit={async (values) => {
-        handleAdd(values)
-      }} visible={createModalOpen}/>
+      <CreateModal
+        columns={columns}
+        onCancel={() => {
+          handleModalOpen(false);
+          //提交
+        }}
+        onSubmit={async (values) => {
+          handleAdd(values);
+        }}
+        visible={createModalOpen}
+      />
     </PageContainer>
   );
 };
 export default TableList;
-
