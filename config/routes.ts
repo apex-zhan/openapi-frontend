@@ -37,10 +37,15 @@ export default [
   },
   {
     path: '/admin',
-    name: 'admin',
+    name: '管理界面',
     icon: 'crown',
     access: 'canAdmin',
     routes: [
+      {
+        path: '/admin/sub-page',
+        name: '管理主页',
+        component: './Admin',
+      },
       {
         name: '接口管理',
         icon: 'table',
@@ -48,20 +53,15 @@ export default [
         component: './TableList',
       },
       {
-        path: '/admin',
-        redirect: '/admin/sub-page',
-      },
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        component: './Admin',
-      },
-      {
-        path: '/admin/interface_analysis',
         name: '接口分析',
         icon: 'api',
-        component: './Admin/interfaceAnalysis',
+        path: '/admin/interface_analysis',
+        component: './InterfaceAnalysis',
       },
+      // {
+      //   path: '/admin',
+      //   redirect: '/admin/sub-page',
+      // },
     ],
   },
 
